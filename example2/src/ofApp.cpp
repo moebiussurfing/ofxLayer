@@ -12,134 +12,144 @@ class MyLayer
 
 public:
 
-    Layer *layerPtr;
+	Layer *layerPtr;
 
 
-    void passLayer(Layer* _layer)
-    {
-        ofLogNotice("MyLayer") << "passLayer:" << ofToString(_layer->getClassName());
-        layerPtr = _layer;
-    }
+	void passLayer(Layer* _layer)
+	{
+		ofLogNotice("MyLayer") << "passLayer:" << ofToString(_layer->getClassName());
+		layerPtr = _layer;
+	}
 
-    void setName(string _name)
-    {
-        ofLogNotice("MyLayer") << "setName: " << _name;
-        name =_name;
-        setup();
-    }
+	void setName(string _name)
+	{
+		ofLogNotice("MyLayer") << "setName: " << _name;
+		name = _name;
+		setup();
+	}
 
-    ofParameter<string> name{"name","name"};
-    ofParameter<bool> enable{"enable", false};
-    ofParameter<float> alpha{"alpha", 0.8f, 0.0f, 1.0f};
-    ofParameter<ofColor> color{"color",ofColor(255),ofColor(0),ofColor(255)};
-    ofParameter<int> blend{"blend", 0, 0, 5};
-    ofParameter<string> blendName{"blendName",""};
-    ofParameter<bool> enableBg{"enableBg", false};
-    ofParameter<ofColor> bgColor{"bgColor",ofColor(128),ofColor(0),ofColor(255)};
-    ofParameter<float> bgAlpha{"bgAlpha", 1.0f, 0.0f, 1.0f};
-    ofParameter<glm::vec2> pos{"pos",
-        glm::vec2(10,10),glm::vec2(0,0),glm::vec2(1440,900)};
-	ofParameter<int> level{ "level", 1, 1, NUM_LAYERS};
+	ofBlendMode OF_BlendMode;
 
-    ofParameterGroup params{"MyLayer"};
-    ofBlendMode OF_BlendMode;
+	ofParameter<string> name{ "name","name" };
+	ofParameter<bool> enable{ "enable", false };
+	ofParameter<float> alpha{ "alpha", 0.8f, 0.0f, 1.0f };
+	ofParameter<ofColor> color{ "color",ofColor(255),ofColor(0),ofColor(255) };
+	ofParameter<int> blend{ "blend", 0, 0, 5 };
+	ofParameter<string> blendName{ "","" };
+	ofParameter<bool> enableBg{ "enableBg", false };
+	ofParameter<ofColor> bgColor{ "bgColor",ofColor(128),ofColor(0),ofColor(255) };
+	ofParameter<float> bgAlpha{ "bgAlpha", 1.0f, 0.0f, 1.0f };
+	ofParameter<glm::vec2> pos{ "pos",
+		glm::vec2(10,10),glm::vec2(0,0),glm::vec2(1440,900) };
+	ofParameter<int> level{ "level", 1, 1, NUM_LAYERS };
 
-    void Changed_params(ofAbstractParameter &e)
-    {
-        string name = e.getName();
-        ofLogNotice("MyLayer") << "name: " << name << " : " << e;
+	ofParameterGroup params{ "MyLayer" };
+	ofParameterGroup paramsBg{ "background" };
 
-        if (name == "enable")
-        {
-            if  (layerPtr != nullptr)
-            {
-                layerPtr->setAlpha(enable?alpha.get():0.0f);
-            }
-        }
-        else if (name == "alpha")
-        {
-            if  (layerPtr != nullptr)
-            {
-                layerPtr->setAlpha(alpha.get());
-            }
-        }
-        else if (name == "blend")
-        {
-            switch (blend) {
-                case 0:
-                    layerPtr->setBlendMode(OF_BLENDMODE_DISABLED);
-                    cout <<"OF_BLENDMODE_DISABLED"<<endl;
-                    blendName = "DISABLED";
-                    break;
-                case 1:
-                    layerPtr->setBlendMode(OF_BLENDMODE_ALPHA);
-                    cout <<"OF_BLENDMODE_ALPHA"<<endl;
-                    blendName = "ALPHA";
-                    break;
-                case 2:
-                    layerPtr->setBlendMode(OF_BLENDMODE_ADD);
-                    cout <<"OF_BLENDMODE_ADD"<<endl;
-                    blendName = "ADD";
-                    break;
-                case 3:
-                    layerPtr->setBlendMode(OF_BLENDMODE_SUBTRACT);
-                    cout <<"OF_BLENDMODE_SUBTRACT"<<endl;
-                    blendName = "SUBTRACT";
-                    break;
-                case 4:
-                    layerPtr->setBlendMode(OF_BLENDMODE_MULTIPLY);
-                    cout <<"OF_BLENDMODE_MULTIPLY"<<endl;
-                    blendName = "MULTIPLY";
-                    break;
-                case 5:
-                    layerPtr->setBlendMode(OF_BLENDMODE_SCREEN);
-                    cout <<"OF_BLENDMODE_SCREEN"<<endl;
-                    blendName = "SCREEN";
-                    break;
-            }
-        }
-        //        else if (name == "enableBg")
-        //        {
-        //
-        //        }
-        //        else if (name == "bgColor")
-        //        {
-        //
-        //        }else if (name == "pos")
-        //        {
-        //
-        //        }
-    }
+	void Changed_params(ofAbstractParameter &e)
+	{
+		string name = e.getName();
+		ofLogNotice("MyLayer") << "name: " << name << " : " << e;
 
-    MyLayer()
-    {
-        //params.setName("settings");
-        params.add(name);
-        params.add(enable);
+		if (name == "enable")
+		{
+			if (layerPtr != nullptr)
+			{
+				layerPtr->setAlpha(enable ? alpha.get() : 0.0f);
+			}
+		}
+		else if (name == "alpha")
+		{
+			if (layerPtr != nullptr)
+			{
+				layerPtr->setAlpha(alpha.get());
+			}
+		}
+		else if (name == "blend")
+		{
+			switch (blend) {
+			case 0:
+				layerPtr->setBlendMode(OF_BLENDMODE_DISABLED);
+				cout << "OF_BLENDMODE_DISABLED" << endl;
+				blendName = "DISABLED";
+				break;
+			case 1:
+				layerPtr->setBlendMode(OF_BLENDMODE_ALPHA);
+				cout << "OF_BLENDMODE_ALPHA" << endl;
+				blendName = "ALPHA";
+				break;
+			case 2:
+				layerPtr->setBlendMode(OF_BLENDMODE_ADD);
+				cout << "OF_BLENDMODE_ADD" << endl;
+				blendName = "ADD";
+				break;
+			case 3:
+				layerPtr->setBlendMode(OF_BLENDMODE_SUBTRACT);
+				cout << "OF_BLENDMODE_SUBTRACT" << endl;
+				blendName = "SUBTRACT";
+				break;
+			case 4:
+				layerPtr->setBlendMode(OF_BLENDMODE_MULTIPLY);
+				cout << "OF_BLENDMODE_MULTIPLY" << endl;
+				blendName = "MULTIPLY";
+				break;
+			case 5:
+				layerPtr->setBlendMode(OF_BLENDMODE_SCREEN);
+				cout << "OF_BLENDMODE_SCREEN" << endl;
+				blendName = "SCREEN";
+				break;
+			}
+		}
+		//        else if (name == "enableBg")
+		//        {
+		//
+		//        }
+		//        else if (name == "bgColor")
+		//        {
+		//
+		//        }else if (name == "pos")
+		//        {
+		//
+		//        }
+	}
+
+	MyLayer()
+	{
+		params.add(name);
+		params.add(enable);
 		params.add(level);
-        params.add(alpha);
-        params.add(color);
-        params.add(blend);
-        params.add(blendName);
-        params.add(enableBg);
-        params.add(bgColor);
-        params.add(bgAlpha);
-        params.add(pos);
-    }
+		params.add(alpha);
+		params.add(color);
+		params.add(blend);
+		params.add(blendName);
+		params.add(pos);
+		paramsBg.add(enableBg);
+		paramsBg.add(bgColor);
+		paramsBg.add(bgAlpha);
+		params.add(paramsBg);
+	}
 
-    void setup()
-    {
-        params.setName(name);
-        ofAddListener(params.parameterChangedE(), this, &MyLayer::Changed_params);
-
-        //string str = name.get() + ".xml";
-        //load(str);
-    }
+	void setup()
+	{
+		name.setSerializable(false);
+		level.setSerializable(false);
+		blendName.setSerializable(false);
+		
+		params.setName(name);
+		ofAddListener(params.parameterChangedE(), this, &MyLayer::Changed_params);
+		//string str = name.get() + ".xml";
+		//load(str);
+	}
 
 	void reLoad()//to reload after layer construction is done
 	{
 		string str = name.get() + ".xml";
 		load(str);
+	}
+	void reSave()//to save after layer construction is done
+	{
+		string str = name.get() + ".xml";
+		save(str);
 	}
 
 	void exit()
@@ -154,38 +164,38 @@ public:
 		cout << "DESTRUCT finish" << endl;
 	}
 
-    ~MyLayer()
-    {
-        //destructor is not triggered on app quit/exit...?
-    }
+	~MyLayer()
+	{
+		//destructor is not triggered on app quit/exit...?
+	}
 
-    void load(string path)
-    {
+	void load(string path)
+	{
 		ofLogNotice("MyLayer") << "load: " << path;
-        load_GroupSettings(params, path);
-    }
+		load_GroupSettings(params, path);
+	}
 
-    void save(string path)
-    {
+	void save(string path)
+	{
 		ofLogNotice("MyLayer") << "save: " << path;
-        save_GroupSettings(params, path);
-    }
+		save_GroupSettings(params, path);
+	}
 
-    void load_GroupSettings(ofParameterGroup &g, string path)
-    {
-        ofLogNotice("MyLayer") << "GroupSettings load " << path;
-        ofXml settings;
-        settings.load(path);
-        ofDeserialize(settings, g);
-    }
+	void load_GroupSettings(ofParameterGroup &g, string path)
+	{
+		ofLogNotice("MyLayer") << "GroupSettings load " << path;
+		ofXml settings;
+		settings.load(path);
+		ofDeserialize(settings, g);
+	}
 
-    void save_GroupSettings(ofParameterGroup &g, string path)
-    {
-        ofLogNotice("MyLayer") << "GroupSettings save " << path;
-        ofXml settings;
-        ofSerialize(settings, g);
-        settings.save(path);
-    }
+	void save_GroupSettings(ofParameterGroup &g, string path)
+	{
+		ofLogNotice("MyLayer") << "GroupSettings save " << path;
+		ofXml settings;
+		ofSerialize(settings, g);
+		settings.save(path);
+	}
 };
 
 //-
@@ -194,120 +204,119 @@ class TestLayer1 : public ofxLayer::Layer
 {
 public:
 
-    OFX_LAYER_DEFINE_LAYER_CLASS(TestLayer1);
-    ofImage img;
-    MyLayer myLayer;
+	OFX_LAYER_DEFINE_LAYER_CLASS(TestLayer1);
+	ofImage img;
+	MyLayer myLayer;
 
-    void setup()
-    {
-        img.load("images/bikers.jpg");
-
-    }
-    void update()
-    {
+	void setup()
+	{
+		img.load("images/bikers.jpg");
+	}
+	void update()
+	{
 		//ofLogVerbose("TestLayer1") << "update()";
-        if (myLayer.enableBg.get())
-        {
-            int a = ofMap(myLayer.bgAlpha,0,1,0,255);
-            ofColor c = myLayer.bgColor.get();
-            ofBackground(c.r, c.g, c.b, a);
-        }
+		if (myLayer.enableBg.get())
+		{
+			int a = ofMap(myLayer.bgAlpha, 0, 1, 0, 255);
+			ofColor c = myLayer.bgColor.get();
+			ofBackground(c.r, c.g, c.b, a);
+		}
 		else
 		{
 			ofBackground(255, 0, 0, 0);
 		}
-    }
+	}
 
-    void draw()
-    {
-        ofSetColor(myLayer.color.get());
-        img.draw(myLayer.pos.get().x, myLayer.pos.get().y);
-    }
+	void draw()
+	{
+		ofSetColor(myLayer.color.get());
+		img.draw(myLayer.pos.get().x, myLayer.pos.get().y);
+	}
 
-    ~TestLayer1()
-    {
-        cout <<"~TestLayer1()"<<endl;
-    }
+	~TestLayer1()
+	{
+		cout << "~TestLayer1()" << endl;
+	}
 };
 
 class TestLayer2 : public ofxLayer::Layer
 {
 public:
 
-    OFX_LAYER_DEFINE_LAYER_CLASS(TestLayer2);
-    ofImage img;
-    MyLayer myLayer;
+	OFX_LAYER_DEFINE_LAYER_CLASS(TestLayer2);
+	ofImage img;
+	MyLayer myLayer;
 
-    void setup()
-    {
-        img.load("images/tdf_1972_poster.jpg");
-    }
+	void setup()
+	{
+		img.load("images/tdf_1972_poster.jpg");
+	}
 
-    void update()
-    {
+	void update()
+	{
 		//ofLogVerbose("TestLayer2") << "update()";
 		if (myLayer.enableBg.get())
-        {
-            int a = ofMap(myLayer.bgAlpha,0,1,0,255);
-            ofColor c = myLayer.bgColor.get();
-            ofBackground(c.r, c.g, c.b, a);
-        }
+		{
+			int a = ofMap(myLayer.bgAlpha, 0, 1, 0, 255);
+			ofColor c = myLayer.bgColor.get();
+			ofBackground(c.r, c.g, c.b, a);
+		}
 		else
 		{
 			ofBackground(0, 255, 0, 0);
 		}
-    }
+	}
 
-    void draw()
-    {
-        ofSetColor(myLayer.color.get());
-        img.draw(myLayer.pos.get().x, myLayer.pos.get().y);
-    }
+	void draw()
+	{
+		ofSetColor(myLayer.color.get());
+		img.draw(myLayer.pos.get().x, myLayer.pos.get().y);
+	}
 
-    ~TestLayer2()
-    {
-        cout <<"~TestLayer2()"<<endl;
-    }
+	~TestLayer2()
+	{
+		cout << "~TestLayer2()" << endl;
+	}
 };
 
 class TestLayer3 : public ofxLayer::Layer
 {
 public:
 
-    OFX_LAYER_DEFINE_LAYER_CLASS(TestLayer3);
-    ofImage img;
-    MyLayer myLayer;
+	OFX_LAYER_DEFINE_LAYER_CLASS(TestLayer3);
+	ofImage img;
+	MyLayer myLayer;
 
-    void setup()
-    {
-        img.load("images/gears.gif");
-    }
+	void setup()
+	{
+		img.load("images/gears.gif");
+	}
 
-    void update()
-    {
+	void update()
+	{
 		//ofLogVerbose("TestLayer3") << "update()";
 		if (myLayer.enableBg.get())
-        {
-            int a = ofMap(myLayer.bgAlpha,0,1,0,255);
-            ofColor c = myLayer.bgColor.get();
-            ofBackground(c.r, c.g, c.b, a);
-        }
+		{
+			int a = ofMap(myLayer.bgAlpha, 0, 1, 0, 255);
+			ofColor c = myLayer.bgColor.get();
+			ofBackground(c.r, c.g, c.b, a);
+		}
 		else
 		{
 			ofBackground(0, 0, 255, 0);
 		}
-    }
-
-    void draw()
-    {
-        ofSetColor(myLayer.color.get());
-        img.draw(myLayer.pos.get().x, myLayer.pos.get().y);
 	}
 
-    ~TestLayer3()
-    {
-        cout <<"~TestLayer3()"<<endl;
-    }
+	void draw()
+	{
+		ofSetColor(myLayer.color.get());
+		img.draw(myLayer.pos.get().x, myLayer.pos.get().y);
+	}
+
+	~TestLayer3()
+	{
+		cout << "~TestLayer3()" << endl;
+	}
 };
 
 //-
@@ -324,91 +333,92 @@ class ofApp : public ofBaseApp
 {
 public:
 
-    ofxPanel gui;
+	ofxPanel gui;
 
-    //selector
-    //int NUM_LAYERS = 3;
-    ofParameterGroup paramsControl{"MANAGER"};
-    ofParameter<int> selectedLayer{"LAYER", 1, 1, NUM_LAYERS};
+	//selector
+	ofParameterGroup paramsControl{ "MANAGER" };
+	ofParameter<int> selectedLayer{ "LAYER", 1, 1, NUM_LAYERS };
 	ofParameter<bool> selectedEnable{ "ENABLE", false };
 	ofParameter<float> selectedAlpha{ "ALPHA", 0.5f, 0.0f, 1.0f };
 	ofParameter<int> selectedLevel{ "LEVEL", 1, 1, NUM_LAYERS };//layer vele/sorting position 1=front
 	ofParameter<bool> moveUp{ "UP", false };
-	ofParameter<bool> moveDown{"DOWN", false};
-    ofxPanel guiControl;
+	ofParameter<bool> moveDown{ "DOWN", false };
+	ofParameter<bool> bSave{ "SAVE", false };
+	ofParameter<bool> bLoad{ "LOAD", false };
+	ofxPanel guiControl;
 
-	//int selectedLevel = -1;
+	void setup()
+	{
+		ofSetLogLevel(OF_LOG_VERBOSE);
 
-    void setup()
-    {
-        ofSetLogLevel(OF_LOG_VERBOSE);
-
-        ofSetFrameRate(30);
-        ofBackground(30);
+		ofSetFrameRate(30);
+		ofBackground(30);
 
 		//-
 
-        //control
+		//control
 		paramsControl.add(selectedLayer);
 		paramsControl.add(selectedEnable);
 		paramsControl.add(selectedAlpha);
 		paramsControl.add(selectedLevel);
 		paramsControl.add(moveUp);
 		paramsControl.add(moveDown);
+		paramsControl.add(bSave);
+		paramsControl.add(bLoad);
 
-        ofAddListener(paramsControl.parameterChangedE(), this, &ofApp::Changed_params);
+		ofAddListener(paramsControl.parameterChangedE(), this, &ofApp::Changed_params);
 
-        guiControl.setup("CONTROL");
-        guiControl.add(paramsControl);
-        guiControl.setPosition(300,5);
+		guiControl.setup("CONTROL");
+		guiControl.add(paramsControl);
+		guiControl.setPosition(300, 5);
 
-        //-
+		//-
 
-        mng.setup(ofGetWindowWidth()-100, ofGetWindowHeight()-100);
+		mng.setup(ofGetWindowWidth() - 100, ofGetWindowHeight() - 100);
 
-        layer1 = mng.createLayer<TestLayer1>(1);
-        layer2 = mng.createLayer<TestLayer2>(1);
-        layer3 = mng.createLayer<TestLayer3>(1);
+		layer1 = mng.createLayer<TestLayer1>(1);
+		layer2 = mng.createLayer<TestLayer2>(1);
+		layer3 = mng.createLayer<TestLayer3>(1);
 
-        layer1->setAlpha(1);
-        layer2->setAlpha(1);
-        layer3->setAlpha(1);
-		
+		layer1->setAlpha(1);
+		layer2->setAlpha(1);
+		layer3->setAlpha(1);
+
 		//sorting
-        //layer1->setLayerIndex(2);
+		//layer1->setLayerIndex(2);
 
-        //params
-        layer1->myLayer.setName("layer1");
-        layer2->myLayer.setName("layer2");
-        layer3->myLayer.setName("layer3");
+		//params
+		layer1->myLayer.setName("layer1");
+		layer2->myLayer.setName("layer2");
+		layer3->myLayer.setName("layer3");
 
 		//populate default layout (when no xml settings)
 		int pad = 100;
 		int x = 400;
 		int y = 200;
-		layer1->myLayer.pos.set((glm::vec2(x+pad, y+pad)));
-		layer2->myLayer.pos.set((glm::vec2(x+2*pad, y + 2*pad)));
-		layer3->myLayer.pos.set((glm::vec2(x+3*pad, y + 3*pad)));
-		
+		layer1->myLayer.pos.set((glm::vec2(x + pad, y + pad)));
+		layer2->myLayer.pos.set((glm::vec2(x + 2 * pad, y + 2 * pad)));
+		layer3->myLayer.pos.set((glm::vec2(x + 3 * pad, y + 3 * pad)));
+
 		//levels
 		layer1->myLayer.level = 1;
 		layer2->myLayer.level = 2;
 		layer3->myLayer.level = 3;
 
-        //ptr
-        layer1->myLayer.passLayer(layer1);
-        layer2->myLayer.passLayer(layer2);
-        layer3->myLayer.passLayer(layer3);
+		//ptr
+		layer1->myLayer.passLayer(layer1);
+		layer2->myLayer.passLayer(layer2);
+		layer3->myLayer.passLayer(layer3);
 
-        //TODO:
-        //layers sorting...drag system, ImGui/ImNode... should be nice
+		//TODO:
+		//layers sorting...drag system, ImGui/ImNode... should be nice
 
-        //gui
-        gui.setup("LAYERS");
-        gui.add(layer1->myLayer.params);
-        gui.add(layer2->myLayer.params);
-        gui.add(layer3->myLayer.params);
-        gui.setPosition(5, 5);
+		//gui
+		gui.setup("LAYERS");
+		gui.add(layer1->myLayer.params);
+		gui.add(layer2->myLayer.params);
+		gui.add(layer3->myLayer.params);
+		gui.setPosition(5, 5);
 
 		//TODO:
 		//mng.setBackgroundAuto(false);
@@ -416,12 +426,14 @@ public:
 		//-
 
 		//startup
+
+		//load xml settings
 		layer1->myLayer.reLoad();
 		layer2->myLayer.reLoad();
 		layer3->myLayer.reLoad();
 
 		selectedLayer = selectedLayer;//trig callback to refresh 
-    }
+	}
 
 	void exit()
 	{
@@ -432,62 +444,58 @@ public:
 	}
 
 
-    void update()
-    {
-        ofSetWindowTitle(ofToString(ofGetFrameRate(), 2));
-        mng.update();
+	void update()
+	{
+		ofSetWindowTitle(ofToString(ofGetFrameRate(), 2));
+		mng.update();
 
+		//TODO:
 		////to update bg
 		//layer1->update();
 		//layer2->update();
 		//layer3->update();
-    }
+	}
 
-    void draw()
-    {
-        ofEnableAlphaBlending();
-        mng.draw();
+	void draw()
+	{
+		ofEnableAlphaBlending();
+		mng.draw();
 
-        guiControl.draw();
-        gui.draw();
+		guiControl.draw();
+		gui.draw();
 
-        string str;
-        int index = -1;
-        switch (selectedLayer) {
-            case 1:
-                index = layer1->getLayerIndex();
-                break;
-            case 2:
-                index = layer2->getLayerIndex();
-                break;
-            case 3:
-                index = layer3->getLayerIndex();
-                break;
-                //            default:
-                //                ofLogError("ofApp")<<"selected layer not exist";
-                //                break;
-        }
-        if (index == -1)
-        {
-            ofLogError("ofApp")<<"layer index unknown";
-        }
-        str = "LAYER: "+ofToString(selectedLayer);
-        str += " POS: "+ofToString(index);
-        ofDrawBitmapStringHighlight(str, 0, ofGetHeight()-7);
-    }
+		//debug
+		int y = 70;
+		string pad = "  ";
+		string str = "";
+		str += "MONITOR\n";
+		str += "LAYER:" + ofToString(selectedLayer);
+		str += pad;
+		str += "LEVEL:" + ofToString(selectedLevel);
+		str += "\n";
+		str += "\n";
+		str += "KEYS\n";
+		str += "L-R:BROWSE LAYER";
+		str += pad;
+		str += "UP-DOWN:MOVE LEVEL";
+		str += pad;
+		str += "RETURN:ENABLE LAYER";
+		ofDrawBitmapStringHighlight(str, 0, ofGetHeight() - y);
+	}
 
-    void keyPressed(int key)
-    {
+	void keyPressed(int key)
+	{
+		//selector controller
+
 		//sort
-        if (key == OF_KEY_UP)
-        {
-            moveUp = true;
-        }
-        else if (key == OF_KEY_DOWN)
-        {
-            moveDown = true;
-        }
-
+		if (key == OF_KEY_UP)
+		{
+			moveUp = true;
+		}
+		else if (key == OF_KEY_DOWN)
+		{
+			moveDown = true;
+		}
 		//select
 		else if (key == OF_KEY_LEFT)
 		{
@@ -499,36 +507,36 @@ public:
 			if (selectedLayer < 3)
 				selectedLayer++;
 		}
+		//toggle enable
+		else if (key == OF_KEY_RETURN)
+		{
+			selectedEnable = !(selectedEnable.get());
+		}
+	}
 
-        //            if (key == '1') layer3->moveUp();
-        //            if (key == '2') layer3->moveDown();
-        //            if (key == '3') layer3->moveFront();
-        //            if (key == '4') layer3->moveBack();
-    }
+	void keyReleased(int key)
+	{
+	}
 
-    void keyReleased(int key)
-    {
-    }
+	void mouseMoved(int x, int y)
+	{
+	}
 
-    void mouseMoved(int x, int y)
-    {
-    }
+	void mouseDragged(int x, int y, int button)
+	{
+	}
 
-    void mouseDragged(int x, int y, int button)
-    {
-    }
+	void mousePressed(int x, int y, int button)
+	{
+	}
 
-    void mousePressed(int x, int y, int button)
-    {
-    }
+	void mouseReleased(int x, int y, int button)
+	{
+	}
 
-    void mouseReleased(int x, int y, int button)
-    {
-    }
-
-    void windowResized(int w, int h)
-    {
-    }
+	void windowResized(int w, int h)
+	{
+	}
 
 	void Changed_params(ofAbstractParameter &e)
 	{
@@ -540,30 +548,47 @@ public:
 		{
 			//collapse all
 			gui.minimizeAll();
-			//gui.getGroup("layer1").minimizeAll();
-			//gui.getGroup("layer2").minimizeAll();
-			//gui.getGroup("layer3").minimizeAll();
 
 			//expand and get enable and alpha vars from selected
 			if (selectedLayer == 1)
 			{
-				gui.getGroup("layer1").maximize();
+				auto &g = gui.getGroup("layer1");
+				g.maximize();
+				g.getGroup("color").minimize();
+				g.getGroup("pos").minimize();
+				g.getGroup("background").minimize();
 				selectedAlpha = layer1->myLayer.alpha.get();
 				selectedEnable = layer1->myLayer.enable.get();
+				selectedLevel = layer1->myLayer.level.get();
 			}
 			else if (selectedLayer == 2)
 			{
-				gui.getGroup("layer2").maximize();
+				auto &g = gui.getGroup("layer2");
+				g.maximize();
+				g.getGroup("color").minimize();
+				g.getGroup("pos").minimize();
+				g.getGroup("background").minimize();
 				selectedAlpha = layer2->myLayer.alpha.get();
 				selectedEnable = layer2->myLayer.enable.get();
+				selectedLevel = layer2->myLayer.level.get();
 			}
 			else if (selectedLayer == 3)
 			{
-				gui.getGroup("layer3").maximize();
+				auto &g = gui.getGroup("layer3");
+				g.maximize();
+				g.getGroup("color").minimize();
+				g.getGroup("pos").minimize();
+				g.getGroup("background").minimize();
 				selectedAlpha = layer3->myLayer.alpha.get();
 				selectedEnable = layer3->myLayer.enable.get();
+				selectedLevel = layer3->myLayer.level.get();
 			}
 		}
+		//sort
+		//if (key == '1') layer3->moveUp();
+		//if (key == '2') layer3->moveDown();
+		//if (key == '3') layer3->moveFront();
+		//if (key == '4') layer3->moveBack();
 		else if (name == "UP")
 		{
 			moveUp = false;
@@ -642,24 +667,52 @@ public:
 			{
 				layer3->myLayer.alpha = selectedAlpha;
 			}
+
+			if (!selectedEnable)
+				selectedEnable = true;
 		}
 		else if (name == "LEVEL")
 		{
 			if (selectedLayer == 1)
 			{
 				layer1->myLayer.level = selectedLevel;//level starts from 1
-				layer1->setLayerIndex(layer1->myLayer.level-1);//layer starts from 0
+				layer1->setLayerIndex(layer1->myLayer.level - 1);//layer starts from 0
+				//update the other layers level
+				layer2->myLayer.level = layer2->getLayerIndex() + 1;
+				layer3->myLayer.level = layer3->getLayerIndex() + 1;
 			}
 			else if (selectedLayer == 2)
 			{
 				layer2->myLayer.level = selectedLevel;
-				layer2->setLayerIndex(layer2->myLayer.level-1);
+				layer2->setLayerIndex(layer2->myLayer.level - 1);
+				//update the other layers level
+				layer1->myLayer.level = layer1->getLayerIndex() + 1;
+				layer3->myLayer.level = layer3->getLayerIndex() + 1;
 			}
 			else if (selectedLayer == 3)
 			{
 				layer3->myLayer.level = selectedLevel;
-				layer3->setLayerIndex(layer3->myLayer.level-1);
+				layer3->setLayerIndex(layer3->myLayer.level - 1);
+				//update the other layers level
+				layer1->myLayer.level = layer1->getLayerIndex() + 1;
+				layer2->myLayer.level = layer2->getLayerIndex() + 1;
 			}
+		}
+		else if (name == "SAVE" && bSave)
+		{
+			bSave = false;
+			//save xml settings
+			layer1->myLayer.reSave();
+			layer2->myLayer.reSave();
+			layer3->myLayer.reSave();
+		}
+		else if (name == "LOAD" && bLoad)
+		{
+			bLoad = false;
+			//load xml settings
+			layer1->myLayer.reLoad();
+			layer2->myLayer.reLoad();
+			layer3->myLayer.reLoad();
 		}
 	}
 
@@ -668,7 +721,7 @@ public:
 
 int main(int argc, const char** argv)
 {
-    ofSetupOpenGL(1920, 1080, OF_WINDOW);
-    ofRunApp(new ofApp);
-    return 0;
+	ofSetupOpenGL(1920, 1080, OF_WINDOW);
+	ofRunApp(new ofApp);
+	return 0;
 }
