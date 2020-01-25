@@ -6,11 +6,11 @@ docs/html
 docs/tagfile.xml
 
 */bin/*
-!*/bin/data/
+#!*/bin/data/
 
 # for bin folder in root
 /bin/*
-!/bin/data/
+#!/bin/data/
 
 *.XML
 *.xml
@@ -120,3 +120,8 @@ Desktop.ini
 *.sql
 *.sqlite
 
+example2/.vs/example2/v15/Browse.VC.db
+example2/.vs/example2/v15/Browse.VC.opendb
+example2/.vs/example2/v15/Solution.VC.db
+example2/.vs/example2/v15/Solution.VC.db-shm
+example2/.vs/example2/v15/Solution.VC.db-wal
