@@ -3,6 +3,7 @@
 ## ADDED IN THIS FORK:
 
 ## Overview
+ofxLayer it's an addon made by Satoru Higa that handles layers mixable with different GL modes.
 This fork includes another example:
 
 /example2
